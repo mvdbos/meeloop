@@ -1687,15 +1687,27 @@ function jobOutlook(index){
  const sourceLink=`<a href="${source}" target="_blank" rel="noopener">KiesMBO · ${profile.qualification}</a>`;
  const heading='<h3>Vind je hier later werk mee?</h3>';
  if(profile.score===null){
-   return `<section class="job-outlook">${heading}<p>KiesMBO publiceert voor het diploma ${profile.qualification} geen landelijk baankanscijfer.</p><small>Geen peiljaar beschikbaar · gecontroleerd in november 2026<br>${sourceLink}</small></section>`;
+   return `<section class="job-outlook">${heading}<p>Voor deze bol-opleiding geeft KiesMBO geen landelijk cijfer. Wil je weten waar je aan het werk kunt? Vraag op de open dag waar de laatste afgestudeerden werken.</p><small>Geen peiljaar beschikbaar · gecontroleerd in november 2026<br>${sourceLink}</small></section>`;
+ }
+ const score=profile.score;
+ let label,description;
+ if(score<=5){
+   label='Weinig banen voor starters';
+   description='Er zijn in Nederland meer mensen die werk in dit vak zoeken dan er passende banen zijn. Je zoektocht kan daardoor langer duren.';
+ }else if(score===6){
+   label='Genoeg banen voor starters';
+   description='In Nederland zijn er genoeg banen in dit vak voor mensen die net hun diploma hebben.';
+ }else{
+   label='Veel banen voor starters';
+   description='In Nederland zoeken veel werkgevers mensen met dit diploma. Als starter heb je vaak meerdere banen om uit te kiezen.';
  }
  const marks=Array.from({length:10},(_,i)=>{
    const value=i+1;
    return value===profile.score?`<li class="score-here"><strong>${value}</strong><span class="sr-only"> · deze opleiding</span></li>`:`<li>${value}</li>`;
  }).join('');
- return `<section class="job-outlook">${heading}<p><strong>${profile.outlook} · ${profile.score} op 10</strong></p>
+ return `<section class="job-outlook">${heading}<p><strong>Baankans ${score}/10 · ${label}</strong></p><p>${description}</p>
  <small>Diploma ${profile.qualification} · Peiljaar 2025 · Nederland · bol<br>${sourceLink} · <a href="https://www.s-bb.nl/media/sazdemov/tg_2602757_rapport-baankans.pdf" target="_blank" rel="noopener">SBB, rapport 2026</a></small>
- <details class="scale-help"><summary>Hoe lees je deze schaal?</summary><p>SBB vergelijkt hoeveel passende banen er zijn met hoeveel mensen zulk werk zoeken. Een 6 op 10 betekent dus niet dat jij 60% kans hebt op een baan.</p>
+ <details class="scale-help"><summary>Wat zegt dit cijfer?</summary><p>Stel dat je vandaag je diploma haalt. Hoeveel banen passen bij wat je hebt geleerd? En hoeveel mensen zoeken zo’n baan? Dat vergelijkt SBB voor heel Nederland.</p><p>Een 6 betekent dat er genoeg banen zijn. Vanaf een 7 heb je vaak meer keuze. Hoe hoger het cijfer, hoe meer banen er zijn vergeleken met het aantal mensen dat zoekt.</p><p>Het cijfer is geen percentage. Tegen de tijd dat jij klaar bent met school, kan de baankans anders zijn.</p>
  <ol class="score-line" role="list" aria-label="Baankans van 1 tot en met 10">${marks}</ol><p class="score-ends"><span><b>1</b> · Veel meer zoekers dan banen</span><span><b>10</b> · Veel meer banen dan zoekers</span></p></details></section>`;
 }
 function travelInfo(c){
